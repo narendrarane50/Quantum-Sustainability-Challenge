@@ -91,8 +91,8 @@ In the hybrid model, all 5 quantum-derived features ranked in the **top 15 most 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/quantum-wildfire-prediction.git
-cd quantum-wildfire-prediction
+git clone https://github.com/narendrarane50/Quantum-Sustainability-Challenge.git
+cd Quantum-Sustainability-Challenge
 ```
 
 ### 2. Install dependencies
