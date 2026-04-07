@@ -246,17 +246,40 @@ def evaluate_hybrid(hybrid_result, y_va, y_te):
     X_va = hybrid_result["X_hybrid_va"]
     X_te = hybrid_result["X_hybrid_te"]
 
+    yprob_va = model.predict_proba(X_va)[:, 1]
+    yprob_te = model.predict_proba(X_te)[:, 1]
+
+    # ── Threshold tuning on validation set ──
+    # Default 0.5 threshold under-predicts the rare positive class.
+    # We sweep thresholds and pick the one that maximizes validation F1.
+    best_t, best_vf1 = 0.5, 0
+    for t in np.arange(0.15, 0.85, 0.01):
+        f1 = f1_score(y_va, (yprob_va >= t).astype(int), zero_division=0)
+        if f1 > best_vf1:
+            best_vf1, best_t = f1, t
+
+    print(f"\n=== Threshold Tuning ===")
+    print(f"Best threshold: {best_t:.2f} (validation F1 = {best_vf1:.4f})")
+    print(f"(Default 0.5 → val F1 = {f1_score(y_va, (yprob_va >= 0.5).astype(int)):.4f})")
+
+    yp_va = (yprob_va >= best_t).astype(int)
+    yp_te = (yprob_te >= best_t).astype(int)
+
     print("\n=== Hybrid Model — Validation (2022) ===")
-    yp_va = model.predict(X_va)
     print(classification_report(y_va, yp_va))
 
     print("=== Hybrid Model — Test (2023) ===")
-    yp_te = model.predict(X_te)
-    yprob_te = model.predict_proba(X_te)[:, 1]
     print(classification_report(y_te, yp_te))
     print(f"Test F1:  {f1_score(y_te, yp_te):.4f}")
     print(f"Test AUC: {roc_auc_score(y_te, yprob_te):.4f}")
+    print(f"Test Acc: {(yp_te == y_te).mean():.4f}")
     print(f"Confusion matrix:\n{confusion_matrix(y_te, yp_te)}")
+
+    tp = int(((yp_te == 1) & (y_te == 1)).sum())
+    fn = int(((yp_te == 0) & (y_te == 1)).sum())
+    fp = int(((yp_te == 1) & (y_te == 0)).sum())
+    print(f"\nFires correctly caught: {tp}/{tp+fn} ({tp/(tp+fn)*100:.0f}%)")
+    print(f"False alarms: {fp}")
 
     # Feature importance
     from src.data_preprocessing import FEATURE_COLS
@@ -272,6 +295,7 @@ def evaluate_hybrid(hybrid_result, y_va, y_te):
         "test_f1": f1_score(y_te, yp_te),
         "test_auc": roc_auc_score(y_te, yprob_te),
         "test_predictions": yp_te,
+        "threshold": float(best_t),
     }
 
 

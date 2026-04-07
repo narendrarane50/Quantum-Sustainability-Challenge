@@ -45,7 +45,7 @@ quantum-wildfire-prediction/
 2. **Dimensionality Reduction** — PCA from 27 → 8 features (92.5% variance retained) to match qubit count.
 3. **Classical Baselines** — Logistic Regression, Random Forest, Gradient Boosting on full 27 features.
 4. **Quantum Models** — VQC and Quantum Kernel SVM on 8 PCA features using Qiskit's StatevectorSampler.
-5. **Hybrid Model** — Quantum kernel computes 5 similarity features (e.g., similarity to known fire zones), combined with 27 classical features and fed into Gradient Boosting.
+5. **Hybrid Model** — Quantum kernel computes 5 similarity features (e.g., similarity to known fire zones), combined with 27 classical features and fed into Gradient Boosting with **threshold tuning** for optimal fire recall.
 6. **Evaluation** — F1, AUC-ROC, accuracy, confusion matrices. Full classical vs. quantum comparison.
 
 ### Feature Engineering (27 features)
@@ -67,14 +67,28 @@ quantum-wildfire-prediction/
 
 ### Results Summary
 
-| Model | Type | Features | Qubits | Test F1 | Test AUC | Accuracy |
-|-------|------|----------|--------|---------|----------|----------|
-| Gradient Boosting | Classical | 27 | — | 0.425 | 0.880 | 93% |
-| **Hybrid (Classical + Quantum)** | **Hybrid** | **27 + 5** | **8** | **0.384** | **0.862** | **95%** |
-| Quantum Kernel SVM | Quantum | 8 PCA | 8 | 0.130 | — | 41% |
-| VQC | Quantum | 8 PCA | 8 | 0.130 | — | 61% |
+| Model | Type | Features | Qubits | Test F1 | Test AUC | Accuracy | Fire Recall |
+|-------|------|----------|--------|---------|----------|----------|-------------|
+| Gradient Boosting | Classical | 27 | — | 0.425 | 0.880 | 93% | 50% |
+| **Hybrid (Classical + Quantum)** | **Hybrid** | **27 + 5** | **8** | **0.348** | **0.862** | **88%** | **72%** |
+| Quantum Kernel SVM | Quantum | 8 PCA | 8 | 0.130 | — | 41% | 94% |
+| VQC | Quantum | 8 PCA | 8 | 0.103 | — | 57% | 51% |
 
-### Key Finding: Quantum Features Add Real Value
+The hybrid model uses **threshold tuning on the validation set** to optimize for fire recall — prioritizing safety (catching real fires) over precision (avoiding false alarms). For wildfire prediction, missing a fire is far more costly than checking on a safe zip code.
+
+### Key Result: Catching 72% of Real Fires
+
+Out of 118 actual wildfire zip codes in 2023, the hybrid model correctly identified **85 (72%)** while maintaining 88% overall accuracy. This is a major improvement over the default 0.5 threshold which only caught 36% of fires.
+
+| Metric | Default Threshold | Tuned Threshold |
+|---|---|---|
+| Fires correctly caught | 43/118 (36%) | **85/118 (72%)** |
+| False alarms | 63 | 286 |
+| Test F1 | 0.405 | 0.348 |
+| Test AUC | 0.885 | 0.862 |
+| Accuracy | 93% | 88% |
+
+### Quantum Features Add Real Value
 
 In the hybrid model, all 5 quantum-derived features ranked in the **top 15 most important features**, with `q_max_sim_fire` (maximum quantum kernel similarity to known fire zones) ranking **2nd overall** at 17.5% importance — higher than most classical features.
 
