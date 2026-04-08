@@ -4,6 +4,7 @@
 
 A hybrid quantum-classical machine learning pipeline that predicts wildfire occurrence across California zip codes using historical fire incident and weather data. Built with IBM Qiskit and scikit-learn.
 
+
 ## Problem Statement
 
 Predict whether a wildfire will occur in each California zip code in **2023**, based on historical fire and weather data from **2018–2022**. The model uses a Variational Quantum Classifier (VQC), Quantum Kernel SVM, and a novel Hybrid Quantum-Classical model, benchmarked against classical baselines.
