@@ -14,10 +14,15 @@ Usage:
     python -m src.export_risk_scores_2021
 """
 
+from pathlib import Path
+import sys
+
+# Add the project root to the Python path
+project_root = Path(__file__).resolve().parent.parent
+sys.path.append(str(project_root))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
-
 from src.data_preprocessing import (
     build_dataset, FEATURE_COLS,
 )
@@ -111,8 +116,9 @@ def export_2021_risk_scores(output_path: str = "results/wildfire_risk_scores_202
     print("EXPORTING WILDFIRE RISK SCORES FOR 2021 (Task 2)")
     print("=" * 60)
 
-    # Build dataset (unchanged)
-    final_df = build_dataset("data/raw")
+    # Build dataset with dynamic path
+    data_dir = str(project_root / 'data' / 'raw')
+    final_df = build_dataset(data_dir)
 
     # Custom splits for 2021 prediction
     splits = build_splits_for_2021(final_df, n_pca=8)
@@ -204,4 +210,5 @@ def export_2021_risk_scores(output_path: str = "results/wildfire_risk_scores_202
 
 
 if __name__ == "__main__":
-    export_2021_risk_scores()
+    output_path = str(project_root / 'results' / 'wildfire_risk_scores_2021.csv')
+    export_2021_risk_scores(output_path=output_path)
