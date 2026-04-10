@@ -1,4 +1,4 @@
-# Python
+# ── Python ────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -8,32 +8,38 @@ venv/
 .venv/
 *.egg
 
-# Jupyter
+# ── Jupyter ───────────────────────────────────────────────────────────────
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Data (large files — keep raw data out of git)
+# ── Raw & processed data (large files, judges have their own copy) ─────────
 data/raw/*.csv
 data/processed/*.csv
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
-# Results
-results/*.png
+# ── Results: KEEP figures and prediction CSVs for judges ──────────────────
+# Ignore intermediate/model artefacts
 results/*.json
 results/*.npz
+results/*.pkl
+results/plots/*.png        # old plots subfolder if it exists
+
+# Keep these — judges need to see them without running the code:
+!results/*.png             # all figures
+!results/*.csv             # all prediction outputs
 !results/.gitkeep
 
-# IDE
+# ── IDE ───────────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# ── OS ────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# Environment
+# ── Environment ───────────────────────────────────────────────────────────
 .env
 *.log
