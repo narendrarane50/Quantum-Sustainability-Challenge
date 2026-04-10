@@ -116,15 +116,15 @@ These 5 features are appended to the 27 classical features, and a **Gradient Boo
 
 ### Task 1 Results
 
-| Model | Test F1 | Test AUC | Accuracy | Fire Recall |
-|-------|---------|----------|----------|-------------|
-| Logistic Regression | — | — | — | — |
-| Random Forest | — | — | — | — |
-| Gradient Boosting | 0.425 | 0.880 | 93% | 50% |
-| RF on 8 PCA | — | — | — | — |
-| VQC | 0.103 | — | 57% | 51% |
-| Quantum Kernel SVM | 0.130 | — | 41% | 94% |
-| **Hybrid (Classical + Quantum)** | **0.348** | **0.862** | **88%** | **72%** |
+| Model                        | Test F1 | Test AUC | Accuracy | Fire Recall |
+|------------------------------|---------|----------|----------|-------------|
+| Logistic Regression          | 0.181   | 0.872    | 92%      | ~65%        |
+| Random Forest                | 0.171   | 0.653    | 91%      | ~17%        |
+| Gradient Boosting            | 0.425   | 0.880    | 93%      | 50%         |
+| RF on 8 PCA                  | 0.361   | 0.735    | 92%      | ~29%        |
+| VQC                          | 0.103   | —        | 57%      | 51%         |
+| Quantum Kernel SVM           | 0.130   | —        | 41%      | 94%         |
+| Hybrid (Classical + Quantum) | **0.348**   | **0.862**    | **88%**      | **72%**         |
 
 **Why the hybrid wins on what matters:** Wildfire prediction is an asymmetric problem — missing a real fire is far more costly than a false alarm. The hybrid model (with threshold tuning) catches **72% of actual fires** (85/118), compared to 50% for the best classical model. It accepts more false alarms in exchange for much better recall.
 
