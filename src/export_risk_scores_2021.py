@@ -210,5 +210,5 @@ def export_2021_risk_scores(output_path: str = "results/wildfire_risk_scores_202
 
 
 if __name__ == "__main__":
-    output_path = str(project_root / 'results' / 'wildfire_risk_scores_2021.csv')
+    output_path = str(project_root / 'results/task1/wildfire_risk_scores_2021.csv')
     export_2021_risk_scores(output_path=output_path)

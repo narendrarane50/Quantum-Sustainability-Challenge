@@ -9,6 +9,7 @@ Implements three approaches:
 
 import json
 import time
+import sys
 import numpy as np
 from pathlib import Path
 from sklearn.svm import SVC
@@ -20,6 +21,9 @@ from qiskit_machine_learning.algorithms import VQC
 from qiskit_machine_learning.kernels import FidelityStatevectorKernel
 from qiskit_machine_learning.optimizers import COBYLA
 from qiskit.primitives import StatevectorSampler
+
+# Add project root to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.data_preprocessing import build_dataset, get_splits, prepare_quantum_data
 
@@ -331,7 +335,7 @@ if __name__ == "__main__":
     hybrid_eval = evaluate_hybrid(hybrid_result, y_va, y_te)
 
     # Save
-    Path("results").mkdir(exist_ok=True)
+    Path("results/task1").mkdir(parents=True, exist_ok=True)
     summary = {
         "VQC": {"val_f1": vqc_eval["val_f1"], "test_f1": vqc_eval["test_f1"],
                 "qubits": 8, **vqc_result["config"]},
@@ -340,6 +344,6 @@ if __name__ == "__main__":
         "Hybrid Model": {"val_f1": hybrid_eval["val_f1"], "test_f1": hybrid_eval["test_f1"],
                          "test_auc": hybrid_eval["test_auc"], "qubits": 8},
     }
-    with open("results/quantum_results.json", "w") as f:
+    with open("results/task1/quantum_results.json", "w") as f:
         json.dump(summary, f, indent=2)
-    print("\nResults saved to results/quantum_results.json")
+    print("\nResults saved to results/task1/quantum_results.json")

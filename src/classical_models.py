@@ -4,11 +4,15 @@ Classical baseline models for wildfire prediction.
 
 import json
 import time
+import sys
 import numpy as np
 from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score, roc_auc_score, classification_report
+
+# Add project root to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.data_preprocessing import build_dataset, get_splits, FEATURE_COLS
 
@@ -72,8 +76,8 @@ if __name__ == "__main__":
     print_summary(results)
     print("\n=== TEST ===")
     evaluate_on_test(results, splits)
-    Path("results").mkdir(exist_ok=True)
+    Path("results/task1").mkdir(parents=True, exist_ok=True)
     out = {n: {k: v for k, v in r.items() if k != "model"} for n, r in results.items()}
-    with open("results/classical_results.json", "w") as f:
+    with open("results/task1/classical_results.json", "w") as f:
         json.dump(out, f, indent=2, default=str)
-    print("\nSaved to results/classical_results.json")
+    print("\nSaved to results/task1/classical_results.json")

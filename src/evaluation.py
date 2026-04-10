@@ -3,11 +3,15 @@ Full pipeline evaluation: classical baselines + quantum models + comparison.
 """
 
 import json
+import sys
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 from sklearn.metrics import f1_score, roc_auc_score, classification_report, confusion_matrix
+
+# Add project root to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.data_preprocessing import build_dataset, get_splits, prepare_quantum_data, FEATURE_COLS
 from src.classical_models import train_classical_baselines
@@ -73,8 +77,8 @@ def run_full_evaluation():
         print(f"{name:<30} {r['type']:<10} {r['f1']:>8.4f} {auc_str:>8}")
 
     # ── Save outputs ──
-    results_dir = Path("results")
-    results_dir.mkdir(exist_ok=True)
+    results_dir = Path("results/task1")
+    results_dir.mkdir(parents=True, exist_ok=True)
 
     # Plots
     names = list(all_results.keys())

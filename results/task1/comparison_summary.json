@@ -1,0 +1,37 @@
+{
+  "Logistic Regression": {
+    "type": "Classical",
+    "f1": 0.18134715025906736,
+    "auc": 0.8715648005478513
+  },
+  "Random Forest": {
+    "type": "Classical",
+    "f1": 0.17647058823529413,
+    "auc": 0.6412566341379901
+  },
+  "Gradient Boosting": {
+    "type": "Classical",
+    "f1": 0.41114982578397213,
+    "auc": 0.8828214346858415
+  },
+  "RF (8 PCA)": {
+    "type": "Classical",
+    "f1": 0.30522088353413657,
+    "auc": 0.7399743194658448
+  },
+  "VQC": {
+    "type": "Quantum",
+    "f1": 0.12457337883959044,
+    "auc": null
+  },
+  "Quantum Kernel SVM": {
+    "type": "Quantum",
+    "f1": 0.12729357798165136,
+    "auc": null
+  },
+  "Hybrid (Classical + Quantum)": {
+    "type": "Hybrid",
+    "f1": 0.3418803418803419,
+    "auc": 0.8604913542201678
+  }
+}

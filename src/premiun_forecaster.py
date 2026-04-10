@@ -810,7 +810,7 @@ if __name__ == "__main__":
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
     DATA_PATH = PROJECT_ROOT / "data"    / "raw"     / "cal_insurance_fire_census_weather.csv"
-    RISK_PATH = PROJECT_ROOT / "results"             / "wildfire_risk_scores_2021.csv"
+    RISK_PATH = PROJECT_ROOT / "results" / "task1"   / "wildfire_risk_scores_2021.csv"
     OUT_PATH  = PROJECT_ROOT / "results" / "task2"
 
     run(str(DATA_PATH), str(RISK_PATH), str(OUT_PATH))
